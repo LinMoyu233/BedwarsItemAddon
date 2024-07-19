@@ -1,21 +1,20 @@
 package me.ram.bedwarsitemaddon.network;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import me.ram.bedwarsitemaddon.Main;
+import me.ram.bedwarsitemaddon.config.Config;
+import me.ram.bedwarsitemaddon.config.EnumLocale;
+import me.ram.bedwarsitemaddon.utils.URLUtil;
+import me.ram.bedwarsitemaddon.utils.UnicodeUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-import me.ram.bedwarsitemaddon.Main;
-import me.ram.bedwarsitemaddon.config.Config;
-import me.ram.bedwarsitemaddon.config.EnumLocale;
-import me.ram.bedwarsitemaddon.utils.URLUtil;
-import me.ram.bedwarsitemaddon.utils.UnicodeUtil;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class UpdateCheck implements Listener {
 
@@ -33,29 +32,20 @@ public class UpdateCheck implements Listener {
         locale_urls.put(EnumLocale.ZH_TW, Arrays.asList(url1, url2));
         locale_urls.put(EnumLocale.EN_US, Arrays.asList(url3));
         Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
-                Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
-                    connectUrl();
-                    Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
-                        if (Config.update_check_enabled && version != null && post != null && update != null && !version.equals(Main.getVersion())) {
-                            sendInfo(Bukkit.getConsoleSender(), version, post, update);
-                        }
-                    }, 100L);
-                });
+            Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
+                connectUrl();
+                Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+                    if (Config.update_check_enabled && version != null && post != null && update != null && !version.equals(Main.getVersion())) {
+                        sendInfo(Bukkit.getConsoleSender(), version, post, update);
+                    }
+                }, 100L);
+            });
             Bukkit.getScheduler().runTaskTimerAsynchronously(Main.getInstance(), () -> {
                 if (Config.update_check_enabled) {
                     connectUrl();
                 }
             }, 20 * 86400, 20 * 86400);
         }, 5);
-    }
-
-    @EventHandler
-    public void playerJoin(PlayerJoinEvent e) {
-        if (Config.update_check_enabled && Config.update_check_report && version != null && post != null && update != null) {
-            if (e.getPlayer().hasPermission("bedwarsitemaddon.updatecheck") && !version.equals(Main.getVersion())) {
-                sendInfo(e.getPlayer(), version, post, update);
-            }
-        }
     }
 
     public static void upCheck(CommandSender sender) {
@@ -116,5 +106,14 @@ public class UpdateCheck implements Listener {
             }
         }
         return null;
+    }
+
+    @EventHandler
+    public void playerJoin(PlayerJoinEvent e) {
+        if (Config.update_check_enabled && Config.update_check_report && version != null && post != null && update != null) {
+            if (e.getPlayer().hasPermission("bedwarsitemaddon.updatecheck") && !version.equals(Main.getVersion())) {
+                sendInfo(e.getPlayer(), version, post, update);
+            }
+        }
     }
 }

@@ -1,8 +1,14 @@
 package me.ram.bedwarsitemaddon.items;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import io.github.bedwarsrel.BedwarsRel;
+import io.github.bedwarsrel.events.BedwarsGameStartEvent;
+import io.github.bedwarsrel.game.Game;
+import io.github.bedwarsrel.game.GameState;
+import me.ram.bedwarsitemaddon.Main;
+import me.ram.bedwarsitemaddon.config.Config;
+import me.ram.bedwarsitemaddon.event.BedwarsUseItemEvent;
+import me.ram.bedwarsitemaddon.utils.LocationUtil;
+import me.ram.bedwarsitemaddon.utils.TakeItemUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -20,15 +26,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 
-import io.github.bedwarsrel.BedwarsRel;
-import io.github.bedwarsrel.events.BedwarsGameStartEvent;
-import io.github.bedwarsrel.game.Game;
-import io.github.bedwarsrel.game.GameState;
-import me.ram.bedwarsitemaddon.Main;
-import me.ram.bedwarsitemaddon.config.Config;
-import me.ram.bedwarsitemaddon.event.BedwarsUseItemEvent;
-import me.ram.bedwarsitemaddon.utils.LocationUtil;
-import me.ram.bedwarsitemaddon.utils.TakeItemUtil;
+import java.util.HashMap;
+import java.util.Map;
 
 public class FireBall implements Listener {
 

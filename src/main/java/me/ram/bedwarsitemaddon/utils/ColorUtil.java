@@ -1,11 +1,11 @@
 package me.ram.bedwarsitemaddon.utils;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ColorUtil {
 
