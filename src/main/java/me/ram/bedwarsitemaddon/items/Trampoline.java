@@ -81,9 +81,6 @@ public class Trampoline implements Listener {
 
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
-        if (!Config.items_trampoline_enabled) {
-            return;
-        }
         Player player = e.getPlayer();
         Game game = BedwarsRel.getInstance().getGameManager().getGameOfPlayer(player);
         if (e.getItem() == null || game == null) {
@@ -99,17 +96,17 @@ public class Trampoline implements Listener {
             if ((e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) && e.getItem().getType() == new ItemStack(Material.valueOf(Config.items_trampoline_item)).getType()) {
                 if ((System.currentTimeMillis() - cooldown.getOrDefault(player, (long) 0)) <= Config.items_trampoline_cooldown * 1000) {
                     e.setCancelled(true);
-                    player.sendMessage(Config.message_cooling.replace("{time}", String.format("%.1f", (((Config.items_trampoline_cooldown * 1000 - System.currentTimeMillis() + cooldown.getOrDefault(player, (long) 0)) / 1000))) + ""));
+                    player.sendMessage(Config.message_cooling.replace("{time}", String.format("%.1f", (((Config.items_trampoline_cooldown * 1000 - System.currentTimeMillis() + cooldown.getOrDefault(player, (long) 0)) / 1000)))));
                 } else {
                     ItemStack stack = e.getItem();
                     Location location1 = player.getLocation();
                     Location location2 = player.getLocation();
-                    int r = 0;
+                    int r;
                     if (Config.items_trampoline_size <= 1) {
                         r = 3;
                     } else if (Config.items_trampoline_size == 2) {
                         r = 4;
-                    } else if (Config.items_trampoline_size >= 3) {
+                    } else {
                         r = 5;
                     }
                     location1.add(r, 0, r);
@@ -136,180 +133,180 @@ public class Trampoline implements Listener {
 
     private void setTrampolineBlock(Game game, Location location, Player player, int size) {
         if (size <= 1) {
-            this.setBlock(game, LocationUtil.getLocation(location, 2, 0, 2), Material.FENCE, (byte) 0);
-            this.setBlock(game, LocationUtil.getLocation(location, -2, 0, 2), Material.FENCE, (byte) 0);
-            this.setBlock(game, LocationUtil.getLocation(location, 2, 0, -2), Material.FENCE, (byte) 0);
-            this.setBlock(game, LocationUtil.getLocation(location, -2, 0, -2), Material.FENCE, (byte) 0);
-            this.setBlock(game, LocationUtil.getLocation(location, 2, 1, 2), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, 1, 1, 2), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, 0, 1, 2), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, -1, 1, 2), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, -2, 1, 2), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, 2, 1, 1), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, 1, 1, 1), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, 0, 1, 1), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, -1, 1, 1), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, -2, 1, 1), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, 2, 1, 0), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, 1, 1, 0), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, 0, 1, 0), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, -1, 1, 0), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, -2, 1, 0), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, 2, 1, -1), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, 1, 1, -1), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, 0, 1, -1), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, -1, 1, -1), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, -2, 1, -1), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, 2, 1, -2), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, 1, 1, -2), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, 0, 1, -2), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, -1, 1, -2), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, -2, 1, -2), Material.WOOL, (byte) 11);
+            this.setBlock(game, LocationUtil.getLocation(location, 2, 0, 2), Material.OAK_FENCE);
+            this.setBlock(game, LocationUtil.getLocation(location, -2, 0, 2), Material.OAK_FENCE);
+            this.setBlock(game, LocationUtil.getLocation(location, 2, 0, -2), Material.OAK_FENCE);
+            this.setBlock(game, LocationUtil.getLocation(location, -2, 0, -2), Material.OAK_FENCE);
+            this.setBlock(game, LocationUtil.getLocation(location, 2, 1, 2), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 1, 1, 2), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 0, 1, 2), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -1, 1, 2), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -2, 1, 2), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 2, 1, 1), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 1, 1, 1), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 0, 1, 1), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -1, 1, 1), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -2, 1, 1), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 2, 1, 0), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 1, 1, 0), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 0, 1, 0), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -1, 1, 0), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -2, 1, 0), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 2, 1, -1), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 1, 1, -1), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 0, 1, -1), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -1, 1, -1), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -2, 1, -1), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 2, 1, -2), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 1, 1, -2), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 0, 1, -2), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -1, 1, -2), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -2, 1, -2), Material.BLUE_WOOL);
         } else if (size == 2) {
-            this.setBlock(game, LocationUtil.getLocation(location, 3, 0, 3), Material.FENCE, (byte) 0);
-            this.setBlock(game, LocationUtil.getLocation(location, -3, 0, 3), Material.FENCE, (byte) 0);
-            this.setBlock(game, LocationUtil.getLocation(location, 3, 0, -3), Material.FENCE, (byte) 0);
-            this.setBlock(game, LocationUtil.getLocation(location, -3, 0, -3), Material.FENCE, (byte) 0);
-            this.setBlock(game, LocationUtil.getLocation(location, 3, 1, 3), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, 2, 1, 3), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, 1, 1, 3), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, 0, 1, 3), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, -1, 1, 3), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, -2, 1, 3), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, -3, 1, 3), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, 3, 1, 2), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, 3, 1, 1), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, 3, 1, 0), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, 3, 1, -1), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, 3, 1, -2), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, -3, 1, 2), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, -3, 1, 1), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, -3, 1, 0), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, -3, 1, -1), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, -3, 1, -2), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, 3, 1, -3), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, 2, 1, -3), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, 1, 1, -3), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, 0, 1, -3), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, -1, 1, -3), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, -2, 1, -3), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, -3, 1, -3), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, 2, 1, 2), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, 1, 1, 2), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, 0, 1, 2), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, -1, 1, 2), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, -2, 1, 2), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, 2, 1, 1), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, 1, 1, 1), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, 0, 1, 1), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, -1, 1, 1), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, -2, 1, 1), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, 2, 1, 0), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, 1, 1, 0), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, 0, 1, 0), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, -1, 1, 0), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, -2, 1, 0), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, 2, 1, -1), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, 1, 1, -1), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, 0, 1, -1), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, -1, 1, -1), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, -2, 1, -1), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, 2, 1, -2), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, 1, 1, -2), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, 0, 1, -2), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, -1, 1, -2), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, -2, 1, -2), Material.WOOL, (byte) 15);
-        } else if (size >= 3) {
-            this.setBlock(game, LocationUtil.getLocation(location, 4, 0, 4), Material.FENCE, (byte) 0);
-            this.setBlock(game, LocationUtil.getLocation(location, -4, 0, 4), Material.FENCE, (byte) 0);
-            this.setBlock(game, LocationUtil.getLocation(location, 4, 0, -4), Material.FENCE, (byte) 0);
-            this.setBlock(game, LocationUtil.getLocation(location, -4, 0, -4), Material.FENCE, (byte) 0);
-            this.setBlock(game, LocationUtil.getLocation(location, 4, 1, 4), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, 3, 1, 4), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, 2, 1, 4), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, 1, 1, 4), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, 0, 1, 4), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, -1, 1, 4), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, -2, 1, 4), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, -3, 1, 4), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, -4, 1, 4), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, 4, 1, 3), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, 4, 1, 2), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, 4, 1, 1), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, 4, 1, 0), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, 4, 1, -1), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, 4, 1, -2), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, 4, 1, -3), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, 4, 1, -4), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, -4, 1, 3), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, -4, 1, 2), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, -4, 1, 1), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, -4, 1, 0), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, -4, 1, -1), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, -4, 1, -2), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, -4, 1, -3), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, 3, 1, -4), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, 2, 1, -4), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, 1, 1, -4), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, 0, 1, -4), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, -1, 1, -4), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, -2, 1, -4), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, -3, 1, -4), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, -4, 1, -4), Material.WOOL, (byte) 11);
-            this.setBlock(game, LocationUtil.getLocation(location, 3, 1, 3), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, 2, 1, 3), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, 1, 1, 3), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, 0, 1, 3), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, -1, 1, 3), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, -2, 1, 3), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, -3, 1, 3), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, 3, 1, 2), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, 3, 1, 1), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, 3, 1, 0), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, 3, 1, -1), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, 3, 1, -2), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, -3, 1, 2), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, -3, 1, 1), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, -3, 1, 0), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, -3, 1, -1), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, -3, 1, -2), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, 3, 1, -3), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, 2, 1, -3), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, 1, 1, -3), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, 0, 1, -3), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, -1, 1, -3), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, -2, 1, -3), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, -3, 1, -3), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, 2, 1, 2), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, 1, 1, 2), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, 0, 1, 2), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, -1, 1, 2), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, -2, 1, 2), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, 2, 1, 1), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, 1, 1, 1), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, 0, 1, 1), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, -1, 1, 1), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, -2, 1, 1), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, 2, 1, 0), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, 1, 1, 0), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, 0, 1, 0), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, -1, 1, 0), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, -2, 1, 0), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, 2, 1, -1), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, 1, 1, -1), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, 0, 1, -1), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, -1, 1, -1), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, -2, 1, -1), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, 2, 1, -2), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, 1, 1, -2), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, 0, 1, -2), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, -1, 1, -2), Material.WOOL, (byte) 15);
-            this.setBlock(game, LocationUtil.getLocation(location, -2, 1, -2), Material.WOOL, (byte) 15);
+            this.setBlock(game, LocationUtil.getLocation(location, 3, 0, 3), Material.OAK_FENCE);
+            this.setBlock(game, LocationUtil.getLocation(location, -3, 0, 3), Material.OAK_FENCE);
+            this.setBlock(game, LocationUtil.getLocation(location, 3, 0, -3), Material.OAK_FENCE);
+            this.setBlock(game, LocationUtil.getLocation(location, -3, 0, -3), Material.OAK_FENCE);
+            this.setBlock(game, LocationUtil.getLocation(location, 3, 1, 3), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 2, 1, 3), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 1, 1, 3), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 0, 1, 3), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -1, 1, 3), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -2, 1, 3), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -3, 1, 3), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 3, 1, 2), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 3, 1, 1), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 3, 1, 0), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 3, 1, -1), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 3, 1, -2), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -3, 1, 2), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -3, 1, 1), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -3, 1, 0), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -3, 1, -1), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -3, 1, -2), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 3, 1, -3), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 2, 1, -3), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 1, 1, -3), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 0, 1, -3), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -1, 1, -3), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -2, 1, -3), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -3, 1, -3), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 2, 1, 2), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 1, 1, 2), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 0, 1, 2), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -1, 1, 2), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -2, 1, 2), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 2, 1, 1), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 1, 1, 1), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 0, 1, 1), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -1, 1, 1), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -2, 1, 1), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 2, 1, 0), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 1, 1, 0), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 0, 1, 0), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -1, 1, 0), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -2, 1, 0), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 2, 1, -1), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 1, 1, -1), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 0, 1, -1), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -1, 1, -1), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -2, 1, -1), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 2, 1, -2), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 1, 1, -2), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 0, 1, -2), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -1, 1, -2), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -2, 1, -2), Material.BLACK_WOOL);
+        } else {
+            this.setBlock(game, LocationUtil.getLocation(location, 4, 0, 4), Material.OAK_FENCE);
+            this.setBlock(game, LocationUtil.getLocation(location, -4, 0, 4), Material.OAK_FENCE);
+            this.setBlock(game, LocationUtil.getLocation(location, 4, 0, -4), Material.OAK_FENCE);
+            this.setBlock(game, LocationUtil.getLocation(location, -4, 0, -4), Material.OAK_FENCE);
+            this.setBlock(game, LocationUtil.getLocation(location, 4, 1, 4), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 3, 1, 4), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 2, 1, 4), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 1, 1, 4), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 0, 1, 4), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -1, 1, 4), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -2, 1, 4), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -3, 1, 4), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -4, 1, 4), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 4, 1, 3), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 4, 1, 2), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 4, 1, 1), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 4, 1, 0), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 4, 1, -1), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 4, 1, -2), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 4, 1, -3), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 4, 1, -4), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -4, 1, 3), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -4, 1, 2), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -4, 1, 1), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -4, 1, 0), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -4, 1, -1), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -4, 1, -2), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -4, 1, -3), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 3, 1, -4), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 2, 1, -4), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 1, 1, -4), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 0, 1, -4), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -1, 1, -4), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -2, 1, -4), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -3, 1, -4), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -4, 1, -4), Material.BLUE_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 3, 1, 3), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 2, 1, 3), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 1, 1, 3), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 0, 1, 3), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -1, 1, 3), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -2, 1, 3), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -3, 1, 3), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 3, 1, 2), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 3, 1, 1), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 3, 1, 0), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 3, 1, -1), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 3, 1, -2), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -3, 1, 2), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -3, 1, 1), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -3, 1, 0), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -3, 1, -1), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -3, 1, -2), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 3, 1, -3), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 2, 1, -3), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 1, 1, -3), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 0, 1, -3), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -1, 1, -3), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -2, 1, -3), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -3, 1, -3), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 2, 1, 2), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 1, 1, 2), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 0, 1, 2), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -1, 1, 2), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -2, 1, 2), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 2, 1, 1), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 1, 1, 1), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 0, 1, 1), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -1, 1, 1), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -2, 1, 1), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 2, 1, 0), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 1, 1, 0), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 0, 1, 0), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -1, 1, 0), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -2, 1, 0), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 2, 1, -1), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 1, 1, -1), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 0, 1, -1), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -1, 1, -1), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -2, 1, -1), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 2, 1, -2), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 1, 1, -2), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, 0, 1, -2), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -1, 1, -2), Material.BLACK_WOOL);
+            this.setBlock(game, LocationUtil.getLocation(location, -2, 1, -2), Material.BLACK_WOOL);
         }
         Main.getInstance().getNoFallManage().addPlayer(player);
     }
 
-    private void setBlock(Game game, Location location, Material material, byte data) {
+    private void setBlock(Game game, Location location, Material material) {
         Location loc = location.getBlock().getLocation();
         for (Player player : LocationUtil.getLocationPlayers(loc)) {
             player.teleport(player.getLocation().add(0, 2, 0));
@@ -319,11 +316,11 @@ public class Trampoline implements Listener {
         }
         Block block = location.getBlock();
         block.setType(material);
-        block.setData(data);
         blocks.get(game.getName()).add(location);
-        if (data == 15 || data == 11) {
+        if (block.getType().equals(Material.BLACK_WOOL) ||block.getType().equals(Material.BLUE_WOOL)) {
             vblocks.get(game.getName()).add(location);
         }
+
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -331,7 +328,7 @@ public class Trampoline implements Listener {
                 vblocks.get(game.getName()).remove(location);
                 blocks.get(game.getName()).remove(location);
             }
-        }.runTaskLater(Main.getInstance(), Config.items_trampoline_staytime * 20);
+        }.runTaskLater(Main.getInstance(), Config.items_trampoline_staytime * 20L);
     }
 
     private boolean isEnoughSpace(Location location1, Location location2) {
@@ -343,10 +340,9 @@ public class Trampoline implements Listener {
                 location.setY(Y);
                 for (int Z : this.getAllNumber((int) location1.getZ(), (int) location2.getZ())) {
                     location.setZ(Z);
-                    if (location.getBlock() != null) {
-                        if (location.getBlock().getType() != Material.AIR) {
-                            enough = false;
-                        }
+                    location.getBlock();
+                    if (location.getBlock().getType() != Material.AIR) {
+                        enough = false;
                     }
                 }
             }

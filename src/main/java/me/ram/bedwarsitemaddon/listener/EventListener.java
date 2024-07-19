@@ -56,8 +56,9 @@ public class EventListener implements Listener {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onMove(PlayerMoveEvent e) {
         Player player = e.getPlayer();
+        if (e.getTo() == null) return;
         Block block = e.getTo().clone().add(0, -1, 0).getBlock();
-        if (!player.isOnGround() && (block == null || block.getType().equals(Material.AIR))) {
+        if (!player.isOnGround() && block.getType().equals(Material.AIR)) {
             return;
         }
         NoFallManage man = Main.getInstance().getNoFallManage();
@@ -72,7 +73,9 @@ public class EventListener implements Listener {
         }, 10L));
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+
+    //修改优先级 ANTI INTAVE NOFALL
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onDamage(EntityDamageEvent e) {
         if (!e.getCause().equals(DamageCause.FALL)) {
             return;

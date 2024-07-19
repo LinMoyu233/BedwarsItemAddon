@@ -79,6 +79,8 @@ public class Main extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage("§7");
         Bukkit.getConsoleSender().sendMessage(" §f" + getLocaleConfig().getLanguage("author") + ": §aRam");
         Bukkit.getConsoleSender().sendMessage("§7");
+        Bukkit.getConsoleSender().sendMessage(" §f" + getLocaleConfig().getLanguage("modified") + ": §aYukiEnd (Powered by ChatGPT)");
+        Bukkit.getConsoleSender().sendMessage("§7");
         Bukkit.getConsoleSender().sendMessage("§f========================================");
         Config.loadConfig();
         Bukkit.getPluginCommand("bedwarsitemaddon").setExecutor(new Commands());
@@ -102,42 +104,71 @@ public class Main extends JavaPlugin {
         }
     }
 
-    @Override
-    public void onLoad() {
-        try {
-            // 允许飞行，防止使用道具时踢出服务器
-            Path path = Paths.get(getDataFolder().getParentFile().getAbsolutePath()).getParent().resolve("server.properties");
-            boolean reboot = false;
-            List<String> lines = Files.readAllLines(path);
-            if (lines.contains("allow-flight=false")) {
-                lines.remove("allow-flight=false");
-                lines.add("allow-flight=true");
-                reboot = true;
-            }
-            Files.write(path, lines, StandardOpenOption.TRUNCATE_EXISTING);
-            if (reboot) {
-                Bukkit.shutdown();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    //注释，防止反作弊绕过，后续会在部分代码中添加临时玩家允许飞行
+//    @Override
+//    public void onLoad() {
+//        try {
+//            // 允许飞行，防止使用道具时踢出服务器
+//            Path path = Paths.get(getDataFolder().getParentFile().getAbsolutePath()).getParent().resolve("server.properties");
+//            boolean reboot = false;
+//            List<String> lines = Files.readAllLines(path);
+//            if (lines.contains("allow-flight=false")) {
+//                lines.remove("allow-flight=false");
+//                lines.add("allow-flight=true");
+//                reboot = true;
+//            }
+//            Files.write(path, lines, StandardOpenOption.TRUNCATE_EXISTING);
+//            if (reboot) {
+//                Bukkit.shutdown();
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     private void registerEvents() {
         Bukkit.getPluginManager().registerEvents(new EventListener(), this);
-        Bukkit.getPluginManager().registerEvents(new UpdateCheck(), this);
-        Bukkit.getPluginManager().registerEvents(new FireBall(), this);
-        Bukkit.getPluginManager().registerEvents(new LightTNT(), this);
-        Bukkit.getPluginManager().registerEvents(new BridgeEgg(), this);
-        Bukkit.getPluginManager().registerEvents(new Parachute(), this);
-        Bukkit.getPluginManager().registerEvents(new TNTLaunch(), this);
-        Bukkit.getPluginManager().registerEvents(new MagicMilk(), this);
-        Bukkit.getPluginManager().registerEvents(new Trampoline(), this);
-        Bukkit.getPluginManager().registerEvents(new CompactTower(), this);
-        Bukkit.getPluginManager().registerEvents(new WalkPlatform(), this);
-        Bukkit.getPluginManager().registerEvents(new TeamIronGolem(), this);
-        Bukkit.getPluginManager().registerEvents(new TeamSilverFish(), this);
-        Bukkit.getPluginManager().registerEvents(new ExplosionProof(), this);
-        Bukkit.getPluginManager().registerEvents(new EnderPearlChair(), this);
+        if (Config.update_check_enabled) {
+            Bukkit.getPluginManager().registerEvents(new UpdateCheck(), this);
+        }
+        if (Config.items_fireball_enabled) {
+            Bukkit.getPluginManager().registerEvents(new FireBall(), this);
+        }
+        if (Config.items_tnt_enabled) {
+            Bukkit.getPluginManager().registerEvents(new LightTNT(), this);
+        }
+        if (Config.items_bridge_egg_enabled) {
+            Bukkit.getPluginManager().registerEvents(new BridgeEgg(), this);
+        }
+        if (Config.items_parachute_enabled) {
+            Bukkit.getPluginManager().registerEvents(new Parachute(), this);
+        }
+        if (Config.items_tnt_launch_enabled) {
+            Bukkit.getPluginManager().registerEvents(new TNTLaunch(), this);
+        }
+        if (Config.items_magic_milk_enabled) {
+            Bukkit.getPluginManager().registerEvents(new MagicMilk(), this);
+        }
+        if (Config.items_trampoline_enabled) {
+            Bukkit.getPluginManager().registerEvents(new Trampoline(), this);
+        }
+        if (Config.items_compact_tower_enabled) {
+            Bukkit.getPluginManager().registerEvents(new CompactTower(), this);
+        }
+        if (Config.items_walk_platform_enabled) {
+            Bukkit.getPluginManager().registerEvents(new WalkPlatform(), this);
+        }
+        if (Config.items_team_iron_golem_enabled) {
+            Bukkit.getPluginManager().registerEvents(new TeamIronGolem(), this);
+        }
+        if (Config.items_team_silver_fish_enabled) {
+            Bukkit.getPluginManager().registerEvents(new TeamSilverFish(), this);
+        }
+        if (Config.items_explosion_proof_enabled) {
+            Bukkit.getPluginManager().registerEvents(new ExplosionProof(), this);
+        }
+        if (Config.items_ender_pearl_chair_enabled) {
+            Bukkit.getPluginManager().registerEvents(new EnderPearlChair(), this);
+        }
     }
 }

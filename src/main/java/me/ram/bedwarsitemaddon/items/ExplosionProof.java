@@ -21,9 +21,6 @@ public class ExplosionProof implements Listener {
 
     @EventHandler
     public void onExplode(EntityExplodeEvent e) {
-        if (!Config.items_explosion_proof_enabled) {
-            return;
-        }
         Location location = e.getEntity().getLocation().getBlock().getLocation().add(0.5, 0.5, 0.5);
         Game game = null;
         for (Game g : BedwarsRel.getInstance().getGameManager().getGames()) {
@@ -36,15 +33,16 @@ public class ExplosionProof implements Listener {
         }
         List<Block> block_list = new ArrayList<>();
         for (Block block : e.blockList()) {
-            if (block.getType().equals(Material.GLASS) || block.getType().equals(Material.STAINED_GLASS) || !game.getRegion().isPlacedBlock(block)) {
+            if (block.getType().equals(Material.GLASS) || block.getType().toString().endsWith("STAINED_GLASS") || !game.getRegion().isPlacedBlock(block)) {
                 continue;
             }
             Location loc = block.getLocation().add(0.5, 0.5, 0.5);
             boolean isadd = true;
+            if (location.getWorld() == null) return;
             Iterator<Block> itr = new BlockIterator(location.getWorld(), location.toVector(), loc.clone().subtract(location).toVector(), 0, (int) Math.ceil(loc.distance(location)));
             while (itr.hasNext()) {
                 Block b = itr.next();
-                if (b.getType().equals(Material.GLASS) || b.getType().equals(Material.STAINED_GLASS)) {
+                if (b.getType().equals(Material.GLASS) || b.getType().toString().endsWith("STAINED_GLASS")) {
                     isadd = false;
                     break;
                 }

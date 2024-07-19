@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import me.ram.bedwarsitemaddon.utils.ColorUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.GameMode;
@@ -81,9 +82,6 @@ public class Parachute implements Listener {
 
     @EventHandler
     public void onInteractEntity(PlayerArmorStandManipulateEvent e) {
-        if (!Config.items_parachute_enabled) {
-            return;
-        }
         Player player = e.getPlayer();
         Game game = BedwarsRel.getInstance().getGameManager().getGameOfPlayer(player);
         if (game == null) {
@@ -134,7 +132,7 @@ public class Parachute implements Listener {
             if ((e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) && e.getItem().getType() == new ItemStack(Material.valueOf(Config.items_parachute_item)).getType()) {
                 if ((System.currentTimeMillis() - cooldown.getOrDefault(player, (long) 0)) <= Config.items_parachute_cooldown * 1000) {
                     e.setCancelled(true);
-                    player.sendMessage(Config.message_cooling.replace("{time}", String.format("%.1f", (((Config.items_parachute_cooldown * 1000 - System.currentTimeMillis() + cooldown.getOrDefault(player, (long) 0)) / 1000))) + ""));
+                    player.sendMessage(Config.message_cooling.replace("{time}", String.format("%.1f", (((Config.items_parachute_cooldown * 1000 - System.currentTimeMillis() + cooldown.getOrDefault(player, (long) 0)) / 1000)))));
                 } else {
                     ItemStack stack = e.getItem();
                     BedwarsUseItemEvent bedwarsUseItemEvent = new BedwarsUseItemEvent(game, player, EnumItem.PARACHUTE, stack);
@@ -143,7 +141,7 @@ public class Parachute implements Listener {
                         cooldown.put(player, System.currentTimeMillis());
                         ejection.get(game.getName()).put(player, ejection.get(game.getName()).getOrDefault(player, 0) + 1);
                         player.getWorld().playSound(player.getLocation(), SoundMachine.get("FIREWORK_LARGE_BLAST", "ENTITY_FIREWORK_LARGE_BLAST"), 1.0f, 1.0f);
-                        player.getWorld().playEffect(player.getLocation(), Effect.EXPLOSION_LARGE, 1);
+                        player.getWorld().playEffect(player.getLocation(), Effect.FIREWORK_SHOOT, 1);
                         player.setSneaking(true);
                         this.setParachute(game, player);
                         TakeItemUtil.TakeItem(player, stack);
@@ -237,38 +235,39 @@ public class Parachute implements Listener {
                 }
                 if (!po && player.getVelocity().getY() < 0) {
                     World world = player.getWorld();
+                    ItemStack helmet = new ItemStack(ColorUtil.getCarpetMaterial(game.getPlayerTeam(player).getColor().getDyeColor()));
                     armorStand1 = world.spawn(LocationUtil.getLocationYaw(player.getLocation(), 0, world.getMaxHeight(), 0), ArmorStand.class);
                     armorStand1.setVisible(false);
                     armorStand1.setGravity(false);
                     armorStand1.setBasePlate(false);
-                    armorStand1.setHelmet(new ItemStack(Material.CARPET));
+                    armorStand1.setHelmet(helmet);
 
                     armorStand2 = world.spawn(LocationUtil.getLocationYaw(player.getLocation(), 0.61, world.getMaxHeight(), 0), ArmorStand.class);
                     armorStand2.setVisible(false);
                     armorStand2.setGravity(false);
                     armorStand2.setBasePlate(false);
-                    armorStand2.setHelmet(new ItemStack(Material.CARPET));
+                    armorStand2.setHelmet(helmet);
                     armorStand2.setHeadPose(EulerAngle.ZERO.setZ(0.1));
 
                     armorStand3 = world.spawn(LocationUtil.getLocationYaw(player.getLocation(), 1.2, world.getMaxHeight(), 0), ArmorStand.class);
                     armorStand3.setVisible(false);
                     armorStand3.setGravity(false);
                     armorStand3.setBasePlate(false);
-                    armorStand3.setHelmet(new ItemStack(Material.CARPET));
+                    armorStand3.setHelmet(helmet);
                     armorStand3.setHeadPose(EulerAngle.ZERO.setZ(0.3));
 
                     armorStand4 = world.spawn(LocationUtil.getLocationYaw(player.getLocation(), -0.61, world.getMaxHeight(), 0), ArmorStand.class);
                     armorStand4.setVisible(false);
                     armorStand4.setGravity(false);
                     armorStand4.setBasePlate(false);
-                    armorStand4.setHelmet(new ItemStack(Material.CARPET));
+                    armorStand4.setHelmet(helmet);
                     armorStand4.setHeadPose(EulerAngle.ZERO.setZ(-0.1));
 
                     armorStand5 = world.spawn(LocationUtil.getLocationYaw(player.getLocation(), -1.2, world.getMaxHeight(), 0), ArmorStand.class);
                     armorStand5.setVisible(false);
                     armorStand5.setGravity(false);
                     armorStand5.setBasePlate(false);
-                    armorStand5.setHelmet(new ItemStack(Material.CARPET));
+                    armorStand5.setHelmet(helmet);
                     armorStand5.setHeadPose(EulerAngle.ZERO.setZ(-0.3));
                     po = true;
                     player.getWorld().playSound(player.getLocation(), SoundMachine.get("HORSE_ARMOR", "ENTITY_HORSE_ARMOR"), 1.0f, 1.0f);
@@ -322,7 +321,7 @@ public class Parachute implements Listener {
                 Location blockloc = player.getLocation();
                 blockloc = blockloc.add(0, -1, 0);
                 Block block = blockloc.getBlock();
-                if (player.isOnGround() || (block != null && block.getType() != Material.AIR)) {
+                if (player.isOnGround() || block.getType() != Material.AIR) {
                     new BukkitRunnable() {
                         @Override
                         public void run() {
@@ -339,7 +338,6 @@ public class Parachute implements Listener {
                         armorStand5.remove();
                     }
                     cancel();
-                    return;
                 }
             }
         }.runTaskTimer(Main.getInstance(), 5L, 0L);

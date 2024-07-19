@@ -26,7 +26,7 @@ import me.ram.bedwarsitemaddon.event.BedwarsUseItemEvent;
 import me.ram.bedwarsitemaddon.utils.LocationUtil;
 
 public class LightTNT implements Listener {
-    private final Map<Player, Long> cooldown = new HashMap<Player, Long>();
+    private final Map<Player, Long> cooldown = new HashMap<>();
 
     @EventHandler
     public void onStart(BedwarsGameStartEvent e) {
@@ -37,9 +37,6 @@ public class LightTNT implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onBlockPlace(BlockPlaceEvent e) {
-        if (!Config.items_tnt_enabled) {
-            return;
-        }
         Player player = e.getPlayer();
         Game game = BedwarsRel.getInstance().getGameManager().getGameOfPlayer(player);
         if (game == null) {
@@ -52,13 +49,14 @@ public class LightTNT implements Listener {
             if (e.getBlock().getType() == new ItemStack(Material.TNT).getType() && !e.isCancelled()) {
                 if ((System.currentTimeMillis() - cooldown.getOrDefault(player, (long) 0)) <= Config.items_tnt_cooldown * 1000) {
                     e.setCancelled(true);
-                    player.sendMessage(Config.message_cooling.replace("{time}", String.format("%.1f", (((Config.items_tnt_cooldown * 1000 - System.currentTimeMillis() + cooldown.getOrDefault(player, (long) 0)) / 1000))) + ""));
+                    player.sendMessage(Config.message_cooling.replace("{time}", String.format("%.1f", (((Config.items_tnt_cooldown * 1000 - System.currentTimeMillis() + cooldown.getOrDefault(player, (long) 0)) / 1000)))));
                 } else {
                     BedwarsUseItemEvent bedwarsUseItemEvent = new BedwarsUseItemEvent(game, player, EnumItem.LIGHT_TNT, new ItemStack(Material.TNT));
                     Bukkit.getPluginManager().callEvent(bedwarsUseItemEvent);
                     if (!bedwarsUseItemEvent.isCancelled()) {
                         cooldown.put(player, System.currentTimeMillis());
                         e.getBlock().setType(Material.AIR);
+                        if (e.getBlock().getLocation().getWorld() == null) return;
                         TNTPrimed tnt = e.getBlock().getLocation().getWorld().spawn(e.getBlock().getLocation().add(0.5, 0, 0.5), TNTPrimed.class);
                         tnt.setYield((float) Config.items_tnt_range);
                         tnt.setIsIncendiary(false);

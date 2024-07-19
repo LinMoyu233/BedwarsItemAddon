@@ -40,9 +40,6 @@ public class EnderPearlChair implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onInteract(PlayerInteractEvent e) {
-        if (!Config.items_ender_pearl_chair_enabled) {
-            return;
-        }
         Player player = e.getPlayer();
         Game game = BedwarsRel.getInstance().getGameManager().getGameOfPlayer(player);
         if (e.getItem() == null || game == null) {
@@ -58,7 +55,7 @@ public class EnderPearlChair implements Listener {
             if ((e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) && e.getItem().getType() == new ItemStack(Material.ENDER_PEARL).getType()) {
                 if ((System.currentTimeMillis() - cooldown.getOrDefault(player, (long) 0)) <= Config.items_ender_pearl_chair_cooldown * 1000) {
                     e.setCancelled(true);
-                    player.sendMessage(Config.message_cooling.replace("{time}", String.format("%.1f", (((Config.items_ender_pearl_chair_cooldown * 1000 - System.currentTimeMillis() + cooldown.getOrDefault(player, (long) 0)) / 1000))) + ""));
+                    player.sendMessage(Config.message_cooling.replace("{time}", String.format("%.1f", (((Config.items_ender_pearl_chair_cooldown * 1000 - System.currentTimeMillis() + cooldown.getOrDefault(player, (long) 0)) / 1000)))));
                 } else {
                     ItemStack stack = e.getItem();
                     BedwarsUseItemEvent bedwarsUseItemEvent = new BedwarsUseItemEvent(game, player, EnumItem.ENDER_PEARL_CHAIR, stack);
@@ -84,13 +81,11 @@ public class EnderPearlChair implements Listener {
                 Location blockloc = player.getLocation();
                 Block block = blockloc.getBlock();
                 Material mate = block.getType();
-                if (mate != null) {
-                    if (mate != Material.AIR) {
-                        player.teleport(player.getLocation().add(0, 1, 0));
-                        enderpearl.remove();
-                        cancel();
-                        return;
-                    }
+                if (mate != Material.AIR) {
+                    player.teleport(player.getLocation().add(0, 1, 0));
+                    enderpearl.remove();
+                    cancel();
+                    return;
                 }
                 if (enderpearl.isDead()) {
                     cancel();
@@ -99,7 +94,6 @@ public class EnderPearlChair implements Listener {
                 if (enderpearl.getPassenger() == null) {
                     enderpearl.remove();
                     cancel();
-                    return;
                 }
             }
         }.runTaskTimer(Main.getInstance(), 0L, 0L);

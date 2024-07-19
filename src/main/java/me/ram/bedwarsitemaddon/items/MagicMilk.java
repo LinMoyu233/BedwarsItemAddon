@@ -41,7 +41,7 @@ public class MagicMilk implements Listener {
                 Iterator<Entry<Player, Long>> iterator = map.entrySet().iterator();
                 while (iterator.hasNext()) {
                     Entry<Player, Long> entry = iterator.next();
-                    if ((System.currentTimeMillis() - entry.getValue()) >= Config.items_magic_milk_duration * 1000) {
+                    if ((System.currentTimeMillis() - entry.getValue()) >= Config.items_magic_milk_duration * 1000L) {
                         Player player = entry.getKey();
                         Arena arena = me.ram.bedwarsscoreboardaddon.Main.getInstance().getArenaManager().getArena(game);
                         if (arena != null) {
@@ -59,9 +59,7 @@ public class MagicMilk implements Listener {
     public void onStart(BedwarsGameStartedEvent e) {
         Game game = e.getGame();
         for (Player player : game.getPlayers()) {
-            if (cooldown.containsKey(player)) {
-                cooldown.remove(player);
-            }
+            cooldown.remove(player);
         }
         immune_players.put(game.getName(), new HashMap<>());
     }
@@ -96,11 +94,8 @@ public class MagicMilk implements Listener {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onPlayerItemConsume(PlayerItemConsumeEvent e) {
         Player player = e.getPlayer();
-        if (!Config.items_magic_milk_enabled) {
-            return;
-        }
         ItemStack item = e.getItem();
-        if (item == null || !item.getType().equals(Material.MILK_BUCKET)) {
+        if (!item.getType().equals(Material.MILK_BUCKET)) {
             return;
         }
         Game game = BedwarsRel.getInstance().getGameManager().getGameOfPlayer(player);
@@ -112,7 +107,7 @@ public class MagicMilk implements Listener {
             return;
         }
         if ((System.currentTimeMillis() - cooldown.getOrDefault(player, (long) 0)) <= Config.items_magic_milk_cooldown * 1000) {
-            player.sendMessage(Config.message_cooling.replace("{time}", String.format("%.1f", (((Config.items_magic_milk_cooldown * 1000 - System.currentTimeMillis() + cooldown.getOrDefault(player, (long) 0)) / 1000))) + ""));
+            player.sendMessage(Config.message_cooling.replace("{time}", String.format("%.1f", (((Config.items_magic_milk_cooldown * 1000 - System.currentTimeMillis() + cooldown.getOrDefault(player, (long) 0)) / 1000)))));
             return;
         }
         cooldown.put(player, System.currentTimeMillis());
@@ -129,7 +124,7 @@ public class MagicMilk implements Listener {
             player.setItemInHand(new ItemStack(Material.AIR));
         } else {
             ItemStack itemStack = player.getInventory().getItemInMainHand();
-            if (itemStack != null && itemStack.getType().equals(Material.MILK_BUCKET)) {
+            if (itemStack.getType().equals(Material.MILK_BUCKET)) {
                 player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
             } else {
                 player.getInventory().setItemInOffHand(new ItemStack(Material.AIR));

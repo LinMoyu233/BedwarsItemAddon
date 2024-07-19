@@ -74,9 +74,6 @@ public class TeamIronGolem implements Listener {
 
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
-        if (!Config.items_team_iron_golem_enabled) {
-            return;
-        }
         Player player = e.getPlayer();
         Game game = BedwarsRel.getInstance().getGameManager().getGameOfPlayer(player);
         if (e.getItem() == null || e.getClickedBlock() == null || game == null) {
@@ -93,7 +90,7 @@ public class TeamIronGolem implements Listener {
                 if (e.getItem().getType() == Material.valueOf(Config.items_team_iron_golem_item) && e.getItem().getDurability() == 0) {
                     if ((System.currentTimeMillis() - cooldown.getOrDefault(player, (long) 0)) <= Config.items_team_iron_golem_cooldown * 1000) {
                         e.setCancelled(true);
-                        player.sendMessage(Config.message_cooling.replace("{time}", String.format("%.1f", (((Config.items_team_iron_golem_cooldown * 1000 - System.currentTimeMillis() + cooldown.getOrDefault(player, (long) 0)) / 1000))) + ""));
+                        player.sendMessage(Config.message_cooling.replace("{time}", String.format("%.1f", (((Config.items_team_iron_golem_cooldown * 1000 - System.currentTimeMillis() + cooldown.getOrDefault(player, (long) 0)) / 1000)))));
                     } else {
                         ItemStack stack = e.getItem();
                         BedwarsUseItemEvent bedwarsUseItemEvent = new BedwarsUseItemEvent(game, player, EnumItem.TEAM_IRON_GOLEM, stack);
@@ -110,9 +107,6 @@ public class TeamIronGolem implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onDamageGolem(EntityDamageByEntityEvent e) {
-        if (!Config.items_team_iron_golem_enabled) {
-            return;
-        }
         if (!(e.getDamager() instanceof Player && e.getEntity() instanceof IronGolem)) {
             return;
         }
@@ -142,9 +136,6 @@ public class TeamIronGolem implements Listener {
 
     @EventHandler
     public void onDamagePlayer(EntityDamageByEntityEvent e) {
-        if (!Config.items_team_iron_golem_enabled) {
-            return;
-        }
         if (!(e.getDamager() instanceof IronGolem && e.getEntity() instanceof Player)) {
             return;
         }
@@ -159,9 +150,6 @@ public class TeamIronGolem implements Listener {
 
     @EventHandler
     public void onDeath(EntityDeathEvent e) {
-        if (!Config.items_team_iron_golem_enabled) {
-            return;
-        }
         if (e.getEntity() instanceof IronGolem) {
             for (Map<IronGolem, Team> golems : Golems.values()) {
                 if (golems.containsKey((IronGolem) e.getEntity())) {
@@ -234,7 +222,7 @@ public class TeamIronGolem implements Listener {
                     Player targetplayer = null;
                     double rangeSquared = 0;
                     for (Player p : players) {
-                        if (p.getGameMode() != GameMode.SPECTATOR && p.getLocation().getWorld() == irongolem.getLocation().getWorld()) {
+                        if (p.getGameMode() != GameMode.SPECTATOR && p.getLocation().getWorld() == irongolem.getLocation().getWorld() && !game.isSpectator(player) && game.getPlayerTeam(player) != null) {
                             if (targetplayer == null) {
                                 targetplayer = p;
                                 rangeSquared = p.getLocation().distanceSquared(irongolem.getLocation());

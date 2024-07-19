@@ -28,6 +28,7 @@ public class LocaleConfig {
 		case ZH_CN:
 			language.put("version", "版本");
 			language.put("author", "作者");
+			language.put("modified", "修改");
 			language.put("update_checking", "§b§lBWIA §f>> §a正在检测更新...");
 			language.put("no_update", "§b§lBWIA §f>> §a您使用的已是最新版本！");
 			language.put("update_check_failed", "§b§lBWIA §f>> §c检测更新失败，请检查服务器网络连接！");
@@ -40,6 +41,7 @@ public class LocaleConfig {
 		case EN_US:
 			language.put("version", "Version");
 			language.put("author", "Author");
+			language.put("modified", "Modified");
 			language.put("update_checking", "§b§lBWIA §f>> §aUpdate check...");
 			language.put("no_update", "§b§lBWIA §f>> §aYou are running the latest version!");
 			language.put("update_check_failed", "§b§lBWIA §f>> §cUpdate check failed! Please check the server network!");
@@ -52,6 +54,7 @@ public class LocaleConfig {
 		case ZH_TW:
 			language.put("version", "版本");
 			language.put("author", "作者");
+			language.put("modified", "修改");
 			language.put("update_checking", "§b§lBWIA §f>> §a正在檢測更新...");
 			language.put("no_update", "§b§lBWIA §f>> §a您使用的已是最新版本！");
 			language.put("update_check_failed", "§b§lBWIA §f>> §c檢測更新失敗，請檢查服務器網絡連接！");

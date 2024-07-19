@@ -10,10 +10,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import me.ram.bedwarsitemaddon.utils.ColorUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.type.Ladder;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -57,6 +60,7 @@ public class CompactTower implements Listener {
         blocks = new ArrayList<>();
         try {
             URL url = Main.getInstance().getClass().getResource("/Tower.blocks");
+            if (url == null) return;
             URLConnection connection = url.openConnection();
             connection.setUseCaches(false);
             InputStream inputStream = connection.getInputStream();
@@ -81,11 +85,8 @@ public class CompactTower implements Listener {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onBlockPlace(BlockPlaceEvent e) {
         Player player = e.getPlayer();
-        if (!Config.items_compact_tower_enabled) {
-            return;
-        }
         Game game = BedwarsRel.getInstance().getGameManager().getGameOfPlayer(player);
-        if (e.getItemInHand() == null || game == null) {
+        if (game == null) {
             return;
         }
         if (game.isOverSet() || game.getState() != GameState.RUNNING || game.isSpectator(player)) {
@@ -100,7 +101,7 @@ public class CompactTower implements Listener {
         }
         e.setCancelled(true);
         if ((System.currentTimeMillis() - cooldown.getOrDefault(player, (long) 0)) <= Config.items_compact_tower_cooldown * 1000) {
-            player.sendMessage(Config.message_cooling.replace("{time}", String.format("%.1f", (((Config.items_compact_tower_cooldown * 1000 - System.currentTimeMillis() + cooldown.getOrDefault(player, (long) 0)) / 1000))) + ""));
+            player.sendMessage(Config.message_cooling.replace("{time}", String.format("%.1f", (((Config.items_compact_tower_cooldown * 1000 - System.currentTimeMillis() + cooldown.getOrDefault(player, (long) 0)) / 1000)))));
             return;
         }
         ItemStack stack = e.getItemInHand();
@@ -128,9 +129,9 @@ public class CompactTower implements Listener {
                 for (String line : blocks.get(i)) {
                     String[] ary = line.split(",");
                     try {
-                        int x = Integer.valueOf(ary[0]);
-                        int y = Integer.valueOf(ary[1]);
-                        int z = Integer.valueOf(ary[2]);
+                        int x = Integer.parseInt(ary[0]);
+                        int y = Integer.parseInt(ary[1]);
+                        int z = Integer.parseInt(ary[2]);
                         if (face == 0) {
                             loc = location.clone().add(x, y, z);
                         } else if (face == 1) {
@@ -140,32 +141,39 @@ public class CompactTower implements Listener {
                         } else if (face == 3) {
                             loc = location.clone().add(z, y, -x);
                         }
+                        if (loc == null) return;
                         Block block = loc.getBlock();
                         if (!isCanPlace(game, loc)) {
                             continue;
                         }
                         try {
                             Material type = Material.valueOf(ary[3]);
-                            if (type == Material.WOOL) {
-                                block.setType(Material.WOOL);
-                                block.setData(team.getColor().getDyeColor().getWoolData());
+                            if (type.toString().endsWith("WOOL")) {
+                                block.setType(ColorUtil.getWoolMaterial(team.getColor().getDyeColor()));
+//                                block.setType(Material.WOOL);
+//                                block.setData(team.getColor().getDyeColor().getWoolData());
                             } else if (type == Material.LADDER) {
                                 block.setType(Material.LADDER);
+                                Ladder ladder = (Ladder) block.getBlockData();
                                 if (face == 0) {
-                                    block.setData((byte) 2);
+                                    ladder.setFacing(BlockFace.NORTH);
+                                    block.setBlockData(ladder);
                                 } else if (face == 1) {
-                                    block.setData((byte) 5);
+                                    ladder.setFacing(BlockFace.EAST);
+                                    block.setBlockData(ladder);
                                 } else if (face == 2) {
-                                    block.setData((byte) 3);
-                                } else if (face == 3) {
-                                    block.setData((byte) 4);
+                                    ladder.setFacing(BlockFace.SOUTH);
+                                    block.setBlockData(ladder);
+                                } else {
+                                    ladder.setFacing(BlockFace.WEST);
+                                    block.setBlockData(ladder);
                                 }
                             } else {
                                 block.setType(type);
-                                try {
-                                    block.setData(Byte.valueOf(ary[4]));
-                                } catch (Exception ignored) {
-                                }
+//                                try {
+//                                    block.setData(Byte.valueOf(ary[4]));
+//                                } catch (Exception ignored) {
+//                                }
                             }
                             game.getRegion().addPlacedBlock(block, null);
                         } catch (Exception e) {
@@ -175,7 +183,7 @@ public class CompactTower implements Listener {
                         e.printStackTrace();
                     }
                 }
-                if (loc != null) {
+                if (loc != null && loc.getWorld() != null) {
                     loc.getWorld().playSound(loc, SoundMachine.get("CHICKEN_EGG_POP", "ENTITY_CHICKEN_EGG"), 5, 1);
                 }
                 i++;
@@ -191,6 +199,7 @@ public class CompactTower implements Listener {
         if (!game.getRegion().isInRegion(location)) {
             return false;
         }
+        if (location.getWorld() == null) return true;
         for (Entity entity : location.getWorld().getNearbyEntities(location.clone().add(0.5, 1, 0.5), 0.5, 1, 0.5)) {
             if (!(entity instanceof Player)) {
                 continue;
@@ -248,9 +257,7 @@ public class CompactTower implements Listener {
             }
         }
         int face = 0;
-        if (nyaw == -360 || nyaw == 0 || nyaw == 360) {
-            face = 0;
-        } else if (nyaw == 90 || nyaw == -270) {
+        if (nyaw == 90 || nyaw == -270) {
             face = 1;
         } else if (nyaw == 180 || nyaw == -180) {
             face = 2;

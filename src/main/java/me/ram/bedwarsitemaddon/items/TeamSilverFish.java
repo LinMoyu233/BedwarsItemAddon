@@ -101,16 +101,13 @@ public class TeamSilverFish implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onSpawn(CreatureSpawnEvent e) {
-        if (Config.items_team_silver_fish_enabled && e.getEntity() instanceof Silverfish) {
+        if (e.getEntity() instanceof Silverfish) {
             e.setCancelled(false);
         }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onDamagePlayerBySilverfish(EntityDamageByEntityEvent e) {
-        if (!Config.items_team_silver_fish_enabled) {
-            return;
-        }
         if (!(e.getDamager() instanceof Silverfish && e.getEntity() instanceof Player)) {
             return;
         }
@@ -144,9 +141,6 @@ public class TeamSilverFish implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onDamageSilverfish(EntityDamageByEntityEvent e) {
-        if (!Config.items_team_silver_fish_enabled) {
-            return;
-        }
         if (!(e.getDamager() instanceof Player && e.getEntity() instanceof Silverfish)) {
             return;
         }
@@ -173,9 +167,6 @@ public class TeamSilverFish implements Listener {
 
     @EventHandler
     public void onDamagePlayer(EntityDamageByEntityEvent e) {
-        if (!Config.items_team_silver_fish_enabled) {
-            return;
-        }
         if (!(e.getDamager() instanceof Silverfish && e.getEntity() instanceof Player)) {
             return;
         }
@@ -190,9 +181,6 @@ public class TeamSilverFish implements Listener {
 
     @EventHandler
     public void onDeath(EntityDeathEvent e) {
-        if (!Config.items_team_silver_fish_enabled) {
-            return;
-        }
         if (e.getEntity() instanceof Silverfish) {
             for (Map<Silverfish, Team> silverfishs : Fishs.values()) {
                 if (silverfishs.containsKey((Silverfish) e.getEntity())) {
@@ -264,7 +252,7 @@ public class TeamSilverFish implements Listener {
                     Player targetplayer = null;
                     double rangeSquared = 0;
                     for (Player p : players) {
-                        if (p.getGameMode() != GameMode.SPECTATOR && p.getLocation().getWorld() == silverfish.getLocation().getWorld()) {
+                        if (p.getGameMode() != GameMode.SPECTATOR && p.getLocation().getWorld() == silverfish.getLocation().getWorld() && !game.isSpectator(player) && game.getPlayerTeam(player) != null) {
                             if (targetplayer == null) {
                                 targetplayer = p;
                                 rangeSquared = p.getLocation().distanceSquared(silverfish.getLocation());

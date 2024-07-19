@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import me.ram.bedwarsitemaddon.utils.ColorUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -43,9 +44,6 @@ public class BridgeEgg implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onInteract(PlayerInteractEvent e) {
         Player player = e.getPlayer();
-        if (!Config.items_bridge_egg_enabled) {
-            return;
-        }
         Game game = BedwarsRel.getInstance().getGameManager().getGameOfPlayer(player);
         if (e.getItem() == null || game == null) {
             return;
@@ -56,7 +54,7 @@ public class BridgeEgg implements Listener {
         if ((e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) && e.getItem().getType() == new ItemStack(Material.EGG).getType()) {
             if ((System.currentTimeMillis() - cooldown.getOrDefault(player, (long) 0)) <= Config.items_bridge_egg_cooldown * 1000) {
                 e.setCancelled(true);
-                player.sendMessage(Config.message_cooling.replace("{time}", String.format("%.1f", (((Config.items_bridge_egg_cooldown * 1000 - System.currentTimeMillis() + cooldown.getOrDefault(player, (long) 0)) / 1000))) + ""));
+                player.sendMessage(Config.message_cooling.replace("{time}", String.format("%.1f", (((Config.items_bridge_egg_cooldown * 1000 - System.currentTimeMillis() + cooldown.getOrDefault(player, (long) 0)) / 1000)))));
             } else {
                 ItemStack stack = e.getItem();
                 BedwarsUseItemEvent bedwarsUseItemEvent = new BedwarsUseItemEvent(game, player, EnumItem.BRIDGE_EGG, stack);
@@ -115,8 +113,9 @@ public class BridgeEgg implements Listener {
                             for (Location loc : blocklocation) {
                                 Block block = loc.getBlock();
                                 if (block.getType() == new ItemStack(Material.AIR).getType() && !block.equals(player.getLocation().getBlock()) && !block.equals(player.getLocation().clone().add(0, 1, 0).getBlock()) && game.getRegion().isInRegion(loc) && i < Config.items_bridge_egg_maxblock) {
-                                    loc.getBlock().setType(Material.WOOL);
-                                    loc.getBlock().setData(game.getPlayerTeam(player).getColor().getDyeColor().getWoolData());
+                                    loc.getBlock().setType(ColorUtil.getWoolMaterial(game.getPlayerTeam(player).getColor().getDyeColor()));
+//                                    loc.getBlock().setType(Material.WOOL);
+//                                    loc.getBlock().setData(game.getPlayerTeam(player).getColor().getDyeColor().getWoolData());
                                     i++;
                                     game.getRegion().addPlacedBlock(loc.getBlock(), null);
                                 }

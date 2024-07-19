@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import me.ram.bedwarsitemaddon.utils.ColorUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -48,9 +49,6 @@ public class WalkPlatform implements Listener {
 
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
-        if (!Config.items_walk_platform_enabled) {
-            return;
-        }
         Player player = e.getPlayer();
         Game game = BedwarsRel.getInstance().getGameManager().getGameOfPlayer(player);
         if (e.getItem() == null || game == null) {
@@ -69,7 +67,7 @@ public class WalkPlatform implements Listener {
             if ((e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) && e.getItem().getType() == Material.valueOf(Config.items_walk_platform_item)) {
                 e.setCancelled(true);
                 if ((System.currentTimeMillis() - cooldown.getOrDefault(player, (long) 0)) <= Config.items_walk_platform_cooldown * 1000) {
-                    player.sendMessage(Config.message_cooling.replace("{time}", String.format("%.1f", (((Config.items_walk_platform_cooldown * 1000 - System.currentTimeMillis() + cooldown.getOrDefault(player, (long) 0)) / 1000))) + ""));
+                    player.sendMessage(Config.message_cooling.replace("{time}", String.format("%.1f", (((Config.items_walk_platform_cooldown * 1000 - System.currentTimeMillis() + cooldown.getOrDefault(player, (long) 0)) / 1000)))));
                 } else {
                     ItemStack stack = e.getItem();
                     BedwarsUseItemEvent bedwarsUseItemEvent = new BedwarsUseItemEvent(game, player, EnumItem.WALK_PLATFORM, stack);
@@ -133,12 +131,13 @@ public class WalkPlatform implements Listener {
                 for (Block block : blocks) {
                     if (block.getType() == Material.AIR && game.getRegion().isInRegion(block.getLocation())) {
                         game.getRegion().addPlacedBlock(block, null);
-                        block.setType(Material.WOOL);
-                        block.setData(team.getColor().getDyeColor().getWoolData());
+//                        block.setType(Material.WOOL);
+//                        block.setData(team.getColor().getDyeColor().getWoolData());
+                        block.setType(ColorUtil.getWoolMaterial(game.getPlayerTeam(player).getColor().getDyeColor()));
                         blocktasks.get(game.getName()).put(block, new BukkitRunnable() {
                             @Override
                             public void run() {
-                                if (block.getType() == Material.WOOL) {
+                                if (block.getType().toString().endsWith("WOOL")) {
                                     block.setType(Material.AIR);
                                 }
                                 blocktasks.get(game.getName()).remove(block);
@@ -149,7 +148,7 @@ public class WalkPlatform implements Listener {
                         blocktasks.get(game.getName()).put(block, new BukkitRunnable() {
                             @Override
                             public void run() {
-                                if (block.getType() == Material.WOOL && block.getData() == team.getColor().getDyeColor().getWoolData()) {
+                                if (block.getType().toString().endsWith("WOOL") && block.getData() == team.getColor().getDyeColor().getWoolData()) {
                                     block.setType(Material.AIR);
                                 }
                                 blocktasks.get(game.getName()).remove(block);

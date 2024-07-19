@@ -33,7 +33,6 @@ public class UpdateCheck implements Listener {
         locale_urls.put(EnumLocale.ZH_TW, Arrays.asList(url1, url2));
         locale_urls.put(EnumLocale.EN_US, Arrays.asList(url3));
         Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
-            if (Config.update_check_enabled) {
                 Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
                     connectUrl();
                     Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
@@ -42,7 +41,6 @@ public class UpdateCheck implements Listener {
                         }
                     }, 100L);
                 });
-            }
             Bukkit.getScheduler().runTaskTimerAsynchronously(Main.getInstance(), () -> {
                 if (Config.update_check_enabled) {
                     connectUrl();
