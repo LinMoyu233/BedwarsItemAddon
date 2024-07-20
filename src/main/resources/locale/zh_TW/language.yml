@@ -10,4 +10,4 @@ commands:
   message:
     prefix: "&b&lBWIA &f>> "
     no_permission: "&c妳沒有使用該命令的權限！"
-    reloaded: "&a配置文件重載完成！"
+    reloaded: "&a配置文件重载完成！道具启用需重启后生效。"

@@ -34,8 +34,8 @@ import java.util.Map;
 
 public class TeamIronGolem implements Listener {
     private final Map<Player, Long> cooldown = new HashMap<>();
-    private Map<String, Map<IronGolem, Team>> Golems = new HashMap<>();
-    private Map<String, Map<IronGolem, Integer>> Guardtime = new HashMap<>();
+    private final Map<String, Map<IronGolem, Team>> Golems = new HashMap<>();
+    private final Map<String, Map<IronGolem, Integer>> Guardtime = new HashMap<>();
 
     @EventHandler
     public void onStart(BedwarsGameStartEvent e) {

@@ -8,7 +8,6 @@ import me.ram.bedwarsitemaddon.config.LocaleConfig;
 import me.ram.bedwarsitemaddon.items.*;
 import me.ram.bedwarsitemaddon.listener.EventListener;
 import me.ram.bedwarsitemaddon.manage.NoFallManage;
-import me.ram.bedwarsitemaddon.network.UpdateCheck;
 import org.bstats.metrics.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -108,9 +107,10 @@ public class Main extends JavaPlugin {
 
     private void registerEvents() {
         Bukkit.getPluginManager().registerEvents(new EventListener(), this);
-        if (Config.update_check_enabled) {
-            Bukkit.getPluginManager().registerEvents(new UpdateCheck(), this);
-        }
+        //原阿里云服务器已无续费
+//        if (Config.update_check_enabled) {
+//            Bukkit.getPluginManager().registerEvents(new UpdateCheck(), this);
+//        }
         if (Config.items_fireball_enabled) {
             Bukkit.getPluginManager().registerEvents(new FireBall(), this);
         }

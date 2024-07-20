@@ -2,7 +2,6 @@ package me.ram.bedwarsitemaddon.command;
 
 import me.ram.bedwarsitemaddon.Main;
 import me.ram.bedwarsitemaddon.config.Config;
-import me.ram.bedwarsitemaddon.network.UpdateCheck;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -41,14 +40,6 @@ public class Commands implements CommandExecutor {
                 }
                 Config.loadConfig();
                 sender.sendMessage(Config.getLanguage("commands.message.prefix") + Config.getLanguage("commands.message.reloaded"));
-                return true;
-            }
-            if (args[0].equalsIgnoreCase("upcheck")) {
-                if (!sender.hasPermission("bedwarsitemaddon.updatecheck")) {
-                    sender.sendMessage(Config.getLanguage("commands.message.prefix") + Config.getLanguage("commands.message.no_permission"));
-                    return true;
-                }
-                UpdateCheck.upCheck(sender);
                 return true;
             }
         }
