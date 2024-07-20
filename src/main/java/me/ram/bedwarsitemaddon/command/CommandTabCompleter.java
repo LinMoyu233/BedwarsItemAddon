@@ -28,7 +28,7 @@ public class CommandTabCompleter implements TabCompleter {
 
     private List<String> getSuggest(CommandSender sender, String[] args) {
         if (args.length == 1) {
-            return Arrays.asList("help", "reload", "upcheck");
+            return Arrays.asList("help", "reload");
         }
         return new ArrayList<>();
     }
