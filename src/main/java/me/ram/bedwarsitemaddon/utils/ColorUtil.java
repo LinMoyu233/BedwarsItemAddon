@@ -74,8 +74,6 @@ public class ColorUtil {
 
     public static Material getCarpetMaterial(DyeColor color) {
         switch (color) {
-            case WHITE:
-                return Material.WHITE_CARPET;
             case ORANGE:
                 return Material.ORANGE_CARPET;
             case MAGENTA:
@@ -106,6 +104,7 @@ public class ColorUtil {
                 return Material.RED_CARPET;
             case BLACK:
                 return Material.BLACK_CARPET;
+            case WHITE:
             default:
                 return Material.WHITE_CARPET;
         }
