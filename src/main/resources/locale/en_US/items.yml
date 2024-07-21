@@ -126,7 +126,7 @@ trampoline:
   cooldown: 5.0
 
   #Item ID
-  item: DOUBLE_PLANT
+  item: SUNFLOWER
 
   #Trampoline size 1-3
   size: 2

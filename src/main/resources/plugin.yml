@@ -1,4 +1,5 @@
 name: BedwarsItemAddon
+api-version: '1.13'
 main: me.ram.bedwarsitemaddon.Main
 version: ${project.version}
 author: Ram

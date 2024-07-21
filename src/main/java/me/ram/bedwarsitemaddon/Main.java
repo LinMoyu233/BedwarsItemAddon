@@ -10,6 +10,7 @@ import me.ram.bedwarsitemaddon.listener.EventListener;
 import me.ram.bedwarsitemaddon.manage.NoFallManage;
 import org.bstats.metrics.Metrics;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -38,7 +39,7 @@ public class Main extends JavaPlugin {
     }
 
     public void onEnable() {
-        if (!getDescription().getName().equals("BedwarsItemAddon") || !getDescription().getVersion().equals(getVersion()) || !getDescription().getAuthors().contains("Ram")) {
+        if (!getDescription().getName().equals("BedwarsItemAddon") || !getDescription().getAuthors().contains("Ram")) {
             try {
                 new Exception("Please don't edit plugin.yml!").printStackTrace();
             } catch (Exception ignored) {
